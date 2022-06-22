@@ -1,4 +1,4 @@
-import {createAction, createReducer, on} from '@ngrx/store';
+import { createAction, createReducer, on } from '@ngrx/store';
 
 export const userReducer = createReducer(
     { maskUserName: false },
