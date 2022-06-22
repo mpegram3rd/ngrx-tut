@@ -15,7 +15,7 @@ export interface ProductState {
 
 const initialState: ProductState = {
     showProductCode: true,
-    currentProductId: 0,
+    currentProductId: null,
     products: []
 };
 
