@@ -4,8 +4,12 @@ export interface UserState {
     maskUserName: boolean;
 }
 
+const initialState: UserState = {
+    maskUserName: true
+};
+
 export const userReducer = createReducer(
-    { maskUserName: false },
+    initialState,
     on(createAction('[User] Toggle Show User name'), state => {
         return {
             ...state,
