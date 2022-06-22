@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { getShowProductCode } from '../state/producer.selectors';
+import { getShowProductCode } from '../state/product.selectors';
 import { State } from '../state/product.reducer';
 
 @Component({
