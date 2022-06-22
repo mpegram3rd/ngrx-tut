@@ -40,7 +40,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // TODO Unsubscribe later
     this.store.select('products').subscribe(
         products => {
-          // when app first start state may not yet be defined
+          // when app first starts state may not yet be defined
           if (products) {
             this.displayCode = products.showProductCode;
           }
