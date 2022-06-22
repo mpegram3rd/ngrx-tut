@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { getShowProductCode } from '../state/producer.selectors';
 import { State } from '../state/product.reducer';
 
 @Component({
@@ -38,8 +39,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
 
     // TODO Unsubscribe later
-    this.store.select('products').subscribe(
-        products => { this.displayCode = products.showProductCode; }
+    this.store.select(getShowProductCode).subscribe(
+        showProductCode => { this.displayCode = showProductCode; }
     );
   }
 
