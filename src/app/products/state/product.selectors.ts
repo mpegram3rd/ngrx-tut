@@ -8,17 +8,17 @@ export const getShowProductCode = createSelector(
     state => state.showProductCode
 );
 
-export const getCurrentProductId = createSelector(
+export const getCurrentProduct = createSelector(
     getProductFeatureState,
-    state => state.currentProductId
+    state => state.currentProduct
 );
 
 // Composite selector
-export const getCurrentProduct = createSelector(
+export const getCurrentProductId = createSelector(
     getProductFeatureState,
-    getCurrentProductId,
-    (state, currentProductId) =>
-       state.products.find(p => p.id === currentProductId)
+    getCurrentProduct,
+    (state, currentProduct) =>
+       state.products.find(p => p.id === currentProduct.id)?.id
 );
 
 export const getProducts = createSelector(
