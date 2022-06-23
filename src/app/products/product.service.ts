@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Product } from './product';
@@ -12,18 +12,13 @@ import { Product } from './product';
 })
 export class ProductService {
   private productsUrl = 'api/products';
-  private products: Product[];
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    if (this.products) {
-      return of(this.products);
-    }
     return this.http.get<Product[]>(this.productsUrl)
       .pipe(
         tap(data => console.log(JSON.stringify(data))),
-        tap(data => this.products = data),
         catchError(this.handleError)
       );
   }
@@ -35,9 +30,6 @@ export class ProductService {
     return this.http.post<Product>(this.productsUrl, newProduct, { headers })
       .pipe(
         tap(data => console.log('createProduct: ' + JSON.stringify(data))),
-        tap(data => {
-          this.products.push(data);
-        }),
         catchError(this.handleError)
       );
   }
@@ -47,13 +39,7 @@ export class ProductService {
     const url = `${this.productsUrl}/${id}`;
     return this.http.delete<Product>(url, { headers })
       .pipe(
-        tap(data => console.log('deleteProduct: ' + id)),
-        tap(data => {
-          const foundIndex = this.products.findIndex(item => item.id === id);
-          if (foundIndex > -1) {
-            this.products.splice(foundIndex, 1);
-          }
-        }),
+        tap(() => console.log('deleteProduct: ' + id)),
         catchError(this.handleError)
       );
   }
@@ -64,15 +50,6 @@ export class ProductService {
     return this.http.put<Product>(url, product, { headers })
       .pipe(
         tap(() => console.log('updateProduct: ' + product.id)),
-        // Update the item in the list
-        // This is required because the selected product that was edited
-        // was a copy of the item from the array.
-        tap(() => {
-          const foundIndex = this.products.findIndex(item => item.id === product.id);
-          if (foundIndex > -1) {
-            this.products[foundIndex] = product;
-          }
-        }),
         // Return the product on an update
         map(() => product),
         catchError(this.handleError)
