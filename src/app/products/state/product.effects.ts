@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { ProductService } from '../product.service';
 import * as ProductActions from './product.actions';
 
@@ -21,6 +21,19 @@ export class ProductEffects {
                 catchError(error =>
                     // This basically dispatches a loadProductsFailure action
                    of(ProductActions.loadProductsFailure( { error })))
+            ))
+        );
+    });
+
+    updateProduct$ = createEffect( () => {
+        return this.actions$.pipe(
+            ofType(ProductActions.updateProduct),
+            // productService.updateProduct() returns an observable.
+            // we don't want nested observables so we use concatMap to merge and flatten the two observables.
+            concatMap(action => this.productService.updateProduct(action.product).pipe(
+                map(product => ProductActions.updateProductSuccess({ product })),
+                catchError(error =>
+                   of(ProductActions.updateProductFailure( { error })))
             ))
         );
     });

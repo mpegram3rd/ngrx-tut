@@ -8,17 +8,29 @@ export const getShowProductCode = createSelector(
     state => state.showProductCode
 );
 
-export const getCurrentProduct = createSelector(
+export const getCurrentProductId = createSelector(
     getProductFeatureState,
-    state => state.currentProduct
+    state => state.currentProductId
 );
 
 // Composite selector
-export const getCurrentProductId = createSelector(
+export const getCurrentProduct = createSelector(
     getProductFeatureState,
-    getCurrentProduct,
-    (state, currentProduct) =>
-       state.products.find(p => p.id === currentProduct.id)?.id
+    getCurrentProductId,
+    (state, currentProductId) => {
+        if (currentProductId === 0) {  // new undefined product
+            return {
+                id: 0,
+                productName: '',
+                productCode: 'New',
+                description: '',
+                starRating: 0
+            };
+        }
+        // Make sure it is not null and find it
+        // Null indicates no product is currently selected
+        return currentProductId ? state.products.find(p => p.id === currentProductId) : null;
+    }
 );
 
 export const getProducts = createSelector(
