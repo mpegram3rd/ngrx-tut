@@ -9,7 +9,7 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 import * as ProductActions from '../state/product.actions';
 import { State } from '../state/product.reducer';
-import { getCurrentProduct, getCurrentProductId } from '../state/product.selectors';
+import { getCurrentProduct } from '../state/product.selectors';
 
 @Component({
   selector: 'pm-product-edit',
