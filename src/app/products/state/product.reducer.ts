@@ -62,6 +62,25 @@ export const productReducer = createReducer<ProductState> (
             error: action.error
         };
     }),
+    on(ProductActions.createProductSuccess, (state, action): ProductState => {
+        // Creates a new array (immutable)
+        // and either copies existing item or replaces with updated item if id matches
+        const updatedProducts = state.products.map(item => item);
+        updatedProducts.push(action.product);
+
+        return {
+            ...state,
+            products: updatedProducts,
+            currentProductId: action.product.id,
+            error: ''
+        };
+    }),
+    on(ProductActions.createProductFailure, (state, action): ProductState => {
+        return {
+            ...state,
+            error: action.error
+        };
+    }),
     on(ProductActions.updateProductSuccess, (state, action): ProductState => {
         // Creates a new array (immutable)
         // and either copies existing item or replaces with updated item if id matches
