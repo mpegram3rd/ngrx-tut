@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../product';
 import * as ProductActions from '../state/product.actions';
 import { State } from '../state/product.reducer';
-import { getCurrentProduct, getProducts, getShowProductCode } from '../state/product.selectors';
+import { getCurrentProduct, getError, getProducts, getShowProductCode } from '../state/product.selectors';
 
 
 @Component({
@@ -15,23 +15,20 @@ import { getCurrentProduct, getProducts, getShowProductCode } from '../state/pro
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
-  errorMessage: string;
 
   products$: Observable<Product[]>;
   selectedProduct$: Observable<Product>;
   displayCode$: Observable<boolean>;
+  errorMessage$: Observable<string>;
 
   constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
     this.products$ = this.store.select(getProducts);
-
     this.store.dispatch(ProductActions.loadProducts());
-
     this.selectedProduct$ = this.store.select(getCurrentProduct);
-
     this.displayCode$ = this.store.select(getShowProductCode);
-
+    this.errorMessage$ = this.store.select(getError);
   }
 
   ngOnDestroy(): void {
