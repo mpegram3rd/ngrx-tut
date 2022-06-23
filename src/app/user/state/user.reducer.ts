@@ -1,5 +1,6 @@
 import { createAction, createReducer, on } from '@ngrx/store';
 import { User } from '../user';
+import * as UserActions from './user.actions';
 
 export interface UserState {
     maskUserName: boolean;
@@ -13,7 +14,7 @@ const initialState: UserState = {
 
 export const userReducer = createReducer<UserState>(
     initialState,
-    on(createAction('[User] Toggle Show User name'), (state): UserState => {
+    on(UserActions.maskUserName, (state): UserState => {
         return {
             ...state,
             maskUserName: !state.maskUserName

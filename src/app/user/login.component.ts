@@ -5,7 +5,9 @@ import { Store } from '@ngrx/store';
 import { State } from '../state/app.state';
 
 import { AuthService } from './auth.service';
+import * as UserActions from './state/user.actions';
 import { getMaskUserName } from './state/user.selectors';
+
 
 @Component({
   templateUrl: './login.component.html',
@@ -30,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(): void {
-    this.store.dispatch({ type: '[User] Toggle Show User name' });
+    this.store.dispatch(UserActions.maskUserName());
   }
 
   login(loginForm: NgForm): void {
