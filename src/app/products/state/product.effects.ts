@@ -50,4 +50,18 @@ export class ProductEffects {
             ))
         );
     });
+
+    deleteProduct$ = createEffect( () => {
+        return this.actions$.pipe(
+            ofType(ProductActions.deleteProduct),
+            // productService.updateProduct() returns an observable.
+            // we don't want nested observables so we use concatMap to merge and flatten the two observables.
+            concatMap(action => this.productService.deleteProduct(action.productId).pipe(
+                map(() => ProductActions.deleteProductSuccess({ productId: action.productId })),
+                catchError(error =>
+                    of(ProductActions.deleteProductFailure( { error })))
+            ))
+        );
+    });
+
 }
