@@ -8,7 +8,7 @@ import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 
 import { Product } from '../product';
-import * as ProductActions from '../state/product.actions';
+import { ProductPageActions } from '../state/actions';
 import { State } from '../state/product.reducer';
 import { getCurrentProduct } from '../state/product.selectors';
 
@@ -111,11 +111,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   deleteProduct(product: Product): void {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
-          this.store.dispatch(ProductActions.deleteProduct({ productId: product.id }));
+          this.store.dispatch(ProductPageActions.deleteProduct({ productId: product.id }));
       }
     } else {
       // No need to delete, it was never saved
-      this.store.dispatch(ProductActions.clearCurrentProduct());
+      this.store.dispatch(ProductPageActions.clearCurrentProduct());
     }
   }
 
@@ -128,9 +128,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         const product = { ...originalProduct, ...this.productForm.value };
 
         if (product.id === 0) {
-          this.store.dispatch(ProductActions.createProduct({ product }));
+          this.store.dispatch(ProductPageActions.createProduct({ product }));
         } else {
-          this.store.dispatch(ProductActions.updateProduct({ product }));
+          this.store.dispatch(ProductPageActions.updateProduct({ product }));
         }
       }
     }

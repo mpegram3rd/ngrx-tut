@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 import { ProductService } from '../product.service';
-import * as ProductActions from './product.actions';
+import { ProductPageActions, ProductApiActions } from './actions';
 
 
 @Injectable()
@@ -15,51 +15,51 @@ export class ProductEffects {
 
     loadProducts$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(ProductActions.loadProducts),
+            ofType(ProductPageActions.loadProducts),
             mergeMap(() => this.productService.getProducts().pipe(
-                map(products => ProductActions.loadProductsSuccess({products})),
+                map(products => ProductApiActions.loadProductsSuccess({products})),
                 catchError(error =>
                     // This basically dispatches a loadProductsFailure action
-                   of(ProductActions.loadProductsFailure( { error })))
+                   of(ProductApiActions.loadProductsFailure( { error })))
             ))
         );
     });
 
     createProduct$ = createEffect( () => {
         return this.actions$.pipe(
-            ofType(ProductActions.createProduct),
+            ofType(ProductPageActions.createProduct),
             // productService.updateProduct() returns an observable.
             // we don't want nested observables so we use concatMap to merge and flatten the two observables.
             concatMap(action => this.productService.createProduct(action.product).pipe(
-                map(product => ProductActions.createProductSuccess({ product })),
+                map(product => ProductApiActions.createProductSuccess({ product })),
                 catchError(error =>
-                    of(ProductActions.createProductFailure( { error })))
+                    of(ProductApiActions.createProductFailure( { error })))
             ))
         );
     });
 
     updateProduct$ = createEffect( () => {
         return this.actions$.pipe(
-            ofType(ProductActions.updateProduct),
+            ofType(ProductPageActions.updateProduct),
             // productService.updateProduct() returns an observable.
             // we don't want nested observables so we use concatMap to merge and flatten the two observables.
             concatMap(action => this.productService.updateProduct(action.product).pipe(
-                map(product => ProductActions.updateProductSuccess({ product })),
+                map(product => ProductApiActions.updateProductSuccess({ product })),
                 catchError(error =>
-                   of(ProductActions.updateProductFailure( { error })))
+                   of(ProductApiActions.updateProductFailure( { error })))
             ))
         );
     });
 
     deleteProduct$ = createEffect( () => {
         return this.actions$.pipe(
-            ofType(ProductActions.deleteProduct),
+            ofType(ProductPageActions.deleteProduct),
             // productService.updateProduct() returns an observable.
             // we don't want nested observables so we use concatMap to merge and flatten the two observables.
             concatMap(action => this.productService.deleteProduct(action.productId).pipe(
-                map(() => ProductActions.deleteProductSuccess({ productId: action.productId })),
+                map(() => ProductApiActions.deleteProductSuccess({ productId: action.productId })),
                 catchError(error =>
-                    of(ProductActions.deleteProductFailure( { error })))
+                    of(ProductApiActions.deleteProductFailure( { error })))
             ))
         );
     });
