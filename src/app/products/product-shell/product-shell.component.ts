@@ -4,7 +4,13 @@ import { Observable } from 'rxjs';
 import { Product } from '../product';
 import { ProductPageActions } from '../state/actions';
 import { State } from '../state/product.reducer';
-import { getCurrentProduct, getError, getProducts, getShowProductCode } from '../state/product.selectors';
+import {
+  getCurrentProduct,
+  getCurrentProductId,
+  getError,
+  getProducts,
+  getShowProductCode
+} from '../state/product.selectors';
 
 @Component({
   templateUrl: './product-shell.component.html'
@@ -38,4 +44,19 @@ export class ProductShellComponent implements OnInit {
     this.store.dispatch(ProductPageActions.setCurrentProduct({ currentProductId: product.id }));
   }
 
+  deleteProduct(product: Product): void {
+    this.store.dispatch(ProductPageActions.deleteProduct( { productId: product.id }));
+  }
+
+  clearCurrentProduct(): void {
+    this.store.dispatch(ProductPageActions.clearCurrentProduct());
+  }
+
+  createNewProduct(product: Product): void {
+    this.store.dispatch(ProductPageActions.createProduct({ product }));
+  }
+
+  updateProduct(product: Product): void {
+    this.store.dispatch(ProductPageActions.deleteProduct({ productId: product.id }));
+  }
 }
